@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -10,6 +12,7 @@ from flask_cors import CORS
 import os
 from openai import OpenAI
 import pandas as pd
+import psutil
 
 app = Flask(__name__)
 
@@ -152,7 +155,9 @@ def find_investors():
 
     return jsonify({"investors": response})
 
-"""
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-"""
+
