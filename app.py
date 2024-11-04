@@ -152,7 +152,6 @@ def find_investors():
 
     return jsonify({"investors": response})
 
-"""
+
 if __name__ == '__main__':
     app.run(debug=True)
-"""
