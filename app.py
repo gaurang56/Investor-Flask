@@ -12,7 +12,7 @@ from flask_cors import CORS
 import os
 from openai import OpenAI
 import pandas as pd
-import psutil
+
 
 app = Flask(__name__)
 
