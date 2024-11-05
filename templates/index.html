@@ -5,283 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startup Investor Matcher</title>
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --background-color: #f3f4f6;
-            --card-background: #ffffff;
-            --text-color: #1f2937;
-        }
-
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            max-width: 1200px;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: var(--background-color);
-            color: var(--text-color);
         }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-
         h1 {
-            color: var(--text-color);
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
+            color: #333;
         }
-
-        .form-container {
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
         form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
         }
-
-        label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
+        label, input, select, textarea {
+            margin-bottom: 10px;
         }
-
-        input, select, textarea {
-            padding: 0.75rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
         button {
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary-color);
+            padding: 10px;
+            background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: background-color 0.2s;
         }
-
-        button:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        .loading::after {
-            content: "Loading...";
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        #results-container {
-            background-color: var(--card-background);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .investor-card {
-            background-color: var(--card-background);
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .investor-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .investor-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .match-percentage {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .error-message {
-            color: #dc2626;
-            background-color: #fee2e2;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-top: 1rem;
-            display: none;
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
     <h1>Startup Investor Matcher</h1>
+    <form id="investorForm">
+        <label for="industry">Select Your Industry:</label>
+        <select id="industry" name="industry" required>
+            <option value="AI/Machine Learning">AI/Machine Learning</option>
+            <option value="FinTech">FinTech</option>
+            <option value="HealthTech">HealthTech</option>
+            <option value="EdTech">EdTech</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="Other">Other</option>
+        </select>
 
-    <div class="container">
-        <div class="form-container">
-            <form id="investorForm">
-                <label for="industry">Select Your Industry:</label>
-                <select id="industry" name="industry" required>
-                    <option value="">Select an industry...</option>
-                    <option value="AI/Machine Learning">AI/Machine Learning</option>
-                    <option value="FinTech">FinTech</option>
-                    <option value="HealthTech">HealthTech</option>
-                    <option value="EdTech">EdTech</option>
-                    <option value="E-commerce">E-commerce</option>
-                    <option value="Other">Other</option>
-                </select>
+        <label for="stage">Select Your Funding Stage:</label>
+        <select id="stage" name="stage" required>
+            <option value="Seed">Seed</option>
+            <option value="Series A">Series A</option>
+            <option value="Series B">Series B</option>
+            <option value="Series C">Series C</option>
+            <option value="Growth">Growth</option>
+        </select>
 
-                <label for="stage">Select Your Funding Stage:</label>
-                <select id="stage" name="stage" required>
-                    <option value="">Select a stage...</option>
-                    <option value="Seed">Seed</option>
-                    <option value="Series A">Series A</option>
-                    <option value="Series B">Series B</option>
-                    <option value="Series C">Series C</option>
-                    <option value="Growth">Growth</option>
-                </select>
+        <label for="description">Briefly describe your startup:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
 
-                <label for="description">Briefly describe your startup:</label>
-                <textarea id="description" name="description" placeholder="Tell us about your startup, its mission, and unique value proposition..." required></textarea>
+        <label for="location">Enter your startup's location:</label>
+        <input type="text" id="location" name="location" required>
 
-                <label for="location">Enter your startup's location:</label>
-                <input type="text" id="location" name="location" placeholder="e.g., San Francisco, CA" required>
+        <button type="submit">Find Matching Investors</button>
+    </form>
 
-                <button type="submit">Find Matching Investors</button>
-            </form>
-            <div class="error-message" id="errorMessage"></div>
-        </div>
-
-        <div id="results-container">
-            <div class="loading" id="loading"></div>
-            <div id="results"></div>
-        </div>
-    </div>
+    <div id="result"></div>
 
     <script>
-        document.getElementById('investorForm').addEventListener('submit', async function(e) {
+        document.getElementById('investorForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
-            // Show loading state
-            const loading = document.getElementById('loading');
-            const results = document.getElementById('results');
-            const errorMessage = document.getElementById('errorMessage');
-
-            loading.style.display = 'block';
-            results.innerHTML = '';
-            errorMessage.style.display = 'none';
-
-            try {
-                const formData = new FormData(this);
-                const response = await fetch('/find_investors', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                // Parse the string response into JSON if it's a string
-                let investors = [];
-                try {
-                    investors = typeof data.investors === 'string'
-                        ? JSON.parse(data.investors)
-                        : data.investors;
-                } catch (e) {
-                    throw new Error('Failed to parse investor data');
-                }
-
-                // Create HTML for each investor
-                const investorsHTML = investors.map(investor => `
-                    <div class="investor-card">
-                        <div class="investor-name">${investor["Investor Name"]}</div>
-                        <div class="investor-details">
-                            <div>
-                                <strong>Focus Areas:</strong><br>
-                                ${investor["Fund Focus Areas"]}
-                            </div>
-                            <div>
-                                <strong>Location:</strong><br>
-                                ${investor["Location"]}
-                            </div>
-                            <div>
-                                <strong>Partner:</strong><br>
-                                ${investor["Contact Details"]["Partner Name"]}
-                            </div>
-                            <div>
-                                <strong>Match Score:</strong><br>
-                                <span class="match-percentage">${investor["Likelihood to Invest"]}</span>
-                            </div>
-                        </div>
-                        <div>
-                            <strong>Match Reason:</strong><br>
-                            ${investor["Match Reason"]}
-                        </div>
-                        <div class="social-links">
-                            ${investor["Contact Details"]["Website"] ?
-                                `<a href="${investor["Contact Details"]["Website"]}" target="_blank">Website</a>` : ''}
-                            ${investor["Contact Details"]["Social Links"]["LinkedIn"] ?
-                                `<a href="${investor["Contact Details"]["Social Links"]["LinkedIn"]}" target="_blank">LinkedIn</a>` : ''}
-                            ${investor["Contact Details"]["Social Links"]["Twitter"] ?
-                                `<a href="${investor["Contact Details"]["Social Links"]["Twitter"]}" target="_blank">Twitter</a>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-
-                results.innerHTML = investorsHTML;
-            } catch (error) {
+            const formData = new FormData(this);
+            console.log(formData.entries)
+            fetch('/find_investors', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = data.investors;
+            })
+            .catch(error => {
                 console.error('Error:', error);
-                errorMessage.textContent = 'An error occurred while finding investors. Please try again.';
-                errorMessage.style.display = 'block';
-            } finally {
-                loading.style.display = 'none';
-            }
+                document.getElementById('result').textContent = 'An error occurred. Please try again.';
+            });
         });
     </script>
 </body>
